@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration
                 ->unique()
                 ->nullable()
                 ->default(null);
+            $table->date('expiration_account')->default(time());
             $table->rememberToken();
             $table->timestamps();
         });

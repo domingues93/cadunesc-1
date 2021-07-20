@@ -18,6 +18,9 @@ Route::post('login', 'Api\ApiTokenController@login');
 Route::get('events/showByDay', 'Api\EventController@showByDay')->name('api.events.showByDay');
 
 Route::middleware('api.auth')->group(function () {
+
+    Route::get('/me', 'Api\ApiTokenController@me');
+
     Route::prefix('events')->group(function () {
         Route::get('', 'Api\EventController@index')->name('api.events.index');
         Route::post('', 'Api\EventController@store');

@@ -22,15 +22,23 @@ class ApiTokenController extends Controller
     {
         try {
             $this->validate(['email', 'password']);
-
             $user = $this->authenticate($request->all());
+            if ( time() > strtotime($user->expiration_account) ){
+                throw response("Conta expirada, por favor entrar em contato com o suporte.", 401);
+            }
 
             $user->update(['api_token' => bcrypt(Str::random(60))]);
-
             return $user;
         } catch (ValidationException $e) {
             return $e->validator->errors();
         }
+    }
+
+    public function me(Request $request)
+    {
+        $token = $request->only("api_token");
+        $user = User::where('api_token', $token)->first();
+        return $user;
     }
 
 
